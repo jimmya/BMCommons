@@ -19,6 +19,7 @@
 #import <BMCommons/BMTableView.h>
 #import <BMCommons/UIScreen+BMCommons.h>
 #import <BMCommons/UITableViewCell+BMCommons.h>
+#import <BMCommons/UIApplication+BMCommonsSharedApplication.h>
 
 // The number of pixels the table needs to be pulled down by in order to initiate the refresh.
 static const CGFloat kRefreshDeltaY = -65.0f;
@@ -475,7 +476,7 @@ static const float kAnimationDuration = 0.3f;
     _keyboardHeight = keyboardFrame.size.height;
     
     if (self.shouldScrollForKeyboard) {
-        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        UIWindow *window = [[UIApplication bm_sharedApplication] keyWindow];
         
         //Convert the window frame to the local coordinate system
         CGRect visibleRect = [self.scrollView convertRect:window.bounds fromView:window];
@@ -514,7 +515,7 @@ static const float kAnimationDuration = 0.3f;
 - (void)scrollToRect:(CGRect)rect inView:(UIView *)view {
     
     //Default behavior
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIWindow *window = [[UIApplication bm_sharedApplication] keyWindow];
     UIScrollView *scrollView = self.scrollView;
     
     //Convert the window frame to the local coordinate system

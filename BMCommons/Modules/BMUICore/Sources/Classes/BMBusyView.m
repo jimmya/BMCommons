@@ -11,6 +11,7 @@
 #import <BMCommons/UIButton+BMCommons.h>
 #import <BMCommons/BMUICore.h>
 #import <BMCommons/UIScreen+BMCommons.h>
+#import <BMCommons/UIApplication+BMCommonsSharedApplication.h>
 
 #define BACKGROUND_VIEW_TAG 100
 #define SEND_TO_BACKGROUND_BUTTON_TAG 101
@@ -49,7 +50,7 @@ static BMBusyViewInitBlock defaultInitBlock = nil;
 - (void)updateLayoutForOrientation {
     CGFloat angle = 0.0;
     
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [[UIApplication bm_sharedApplication] statusBarOrientation];
     
     if (orientation == UIInterfaceOrientationPortrait) {
         self.bounds = self.superview.bounds;
@@ -84,7 +85,7 @@ static BMBusyViewInitBlock defaultInitBlock = nil;
 - (id)init {
     UIWindow *modalWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bmPortraitBounds];
 	modalWindow.windowLevel = UIWindowLevelStatusBar;
-    modalWindow.rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    modalWindow.rootViewController = [UIApplication bm_sharedApplication].keyWindow.rootViewController;
 	return [self initWithSuperView:modalWindow];
 }
 
@@ -199,7 +200,7 @@ static BMBusyViewInitBlock defaultInitBlock = nil;
     if (![self isShown]) {
         BM_RELEASE_SAFELY(oldKeyWindow);
         if ([superView isKindOfClass:[UIWindow class]]) {
-            oldKeyWindow = [[UIApplication sharedApplication] keyWindow];
+            oldKeyWindow = [[UIApplication bm_sharedApplication] keyWindow];
             if (oldKeyWindow != superView) {
                 [(UIWindow *)superView makeKeyAndVisible];
             } else {

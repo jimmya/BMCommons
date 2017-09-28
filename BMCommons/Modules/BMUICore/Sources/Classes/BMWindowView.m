@@ -5,7 +5,7 @@
 
 #import <UIKit/UIKit.h>
 #import <BMCommons/BMWindowView.h>
-
+#import <BMCommons/UIApplication+BMCommonsSharedApplication.h>
 
 static CGFloat UIInterfaceOrientationAngleBetween(UIInterfaceOrientation o1, UIInterfaceOrientation o2);
 static CGFloat UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation);
@@ -64,7 +64,7 @@ static NSMutableArray *_activeWindowViews;
 
 - (id)initAndAddToKeyWindow
 {
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIWindow *window = [[UIApplication bm_sharedApplication] keyWindow];
     self = [self initAndAddToWindow:window];
     if(self)
     {
@@ -115,7 +115,7 @@ static NSMutableArray *_activeWindowViews;
 {
     UIInterfaceOrientation orientation = [self desiredOrientation];
     CGFloat statusBarHeight = [[self class] getStatusBarHeight];
-    UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    UIInterfaceOrientation statusBarOrientation = [UIApplication bm_sharedApplication].statusBarOrientation;
 
     CGFloat angle = 0.0;
 
@@ -154,14 +154,14 @@ static NSMutableArray *_activeWindowViews;
 
 + (CGFloat)getStatusBarHeight
 {
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    UIInterfaceOrientation orientation = [UIApplication bm_sharedApplication].statusBarOrientation;
     if(UIInterfaceOrientationIsLandscape(orientation))
     {
-        return [UIApplication sharedApplication].statusBarFrame.size.width;
+        return [UIApplication bm_sharedApplication].statusBarFrame.size.width;
     }
     else
     {
-        return [UIApplication sharedApplication].statusBarFrame.size.height;
+        return [UIApplication bm_sharedApplication].statusBarFrame.size.height;
     }
 }
 
@@ -201,7 +201,7 @@ static BOOL IS_IOS_8_OR_HIGHER()
 
 - (UIInterfaceOrientation)desiredOrientation
 {
-    UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation statusBarOrientation = [[UIApplication bm_sharedApplication] statusBarOrientation];
     UIInterfaceOrientationMask statusBarOrientationAsMask = UIInterfaceOrientationMaskFromOrientation(statusBarOrientation);
     if(self.supportedInterfaceOrientations & statusBarOrientationAsMask)
     {

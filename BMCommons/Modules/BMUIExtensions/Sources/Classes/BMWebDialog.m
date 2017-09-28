@@ -16,6 +16,7 @@
 
 #import <BMCommons/BMWebDialog.h>
 #import <BMCommons/UIScreen+BMCommons.h>
+#import <BMCommons/UIApplication+BMCommonsSharedApplication.h>
 
 @interface BMWebDialog()<UIWebViewDelegate> 
 
@@ -149,7 +150,7 @@ static CGFloat kBorderWidth = 10;
 }
 
 - (CGAffineTransform)transformForOrientation {
-  UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+  UIInterfaceOrientation orientation = [UIApplication bm_sharedApplication].statusBarOrientation;
   if (orientation == UIInterfaceOrientationLandscapeLeft) {
     return CGAffineTransformMakeRotation(M_PI*1.5);
   } else if (orientation == UIInterfaceOrientationLandscapeRight) {
@@ -174,7 +175,7 @@ static CGFloat kBorderWidth = 10;
   CGFloat width = frame.size.width - kPadding * 2;
   CGFloat height = frame.size.height - kPadding * 2;
   
-  UIInterfaceOrientation interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
+  UIInterfaceOrientation interfaceOrientation = [UIApplication bm_sharedApplication].statusBarOrientation;
   _orientation = (UIDeviceOrientation)interfaceOrientation;
   if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
     self.frame = CGRectMake(kPadding, kPadding, height, width);
@@ -189,7 +190,7 @@ static CGFloat kBorderWidth = 10;
 }
 
 - (void)updateWebOrientation {
-  UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+  UIInterfaceOrientation orientation = [UIApplication bm_sharedApplication].statusBarOrientation;
   if (UIInterfaceOrientationIsLandscape(orientation)) {
     [_webView stringByEvaluatingJavaScriptFromString:
       @"document.body.setAttribute('orientation', 90);"];
@@ -375,7 +376,7 @@ static CGFloat kBorderWidth = 10;
       }
     }
     
-    [[UIApplication sharedApplication] openURL:request.URL];
+    [[UIApplication bm_sharedApplication] openURL:request.URL];
     return NO;
   } else {
     return YES;
@@ -401,11 +402,11 @@ static CGFloat kBorderWidth = 10;
 // UIDeviceOrientationDidChangeNotification
 
 - (void)deviceOrientationDidChange:(void*)object {
-  UIDeviceOrientation orientation = (UIDeviceOrientation)[UIApplication sharedApplication].statusBarOrientation;
+  UIDeviceOrientation orientation = (UIDeviceOrientation)[UIApplication bm_sharedApplication].statusBarOrientation;
   if (!_showingKeyboard && [self shouldRotateToOrientation:orientation]) {
     [self updateWebOrientation];
 
-    CGFloat duration = [UIApplication sharedApplication].statusBarOrientationAnimationDuration;
+    CGFloat duration = [UIApplication bm_sharedApplication].statusBarOrientationAnimationDuration;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:duration];
     [self sizeToFitOrientation:YES];
@@ -417,7 +418,7 @@ static CGFloat kBorderWidth = 10;
 // UIKeyboardNotifications
 
 - (void)keyboardWillShow:(NSNotification*)notification {
-  UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+  UIInterfaceOrientation orientation = [UIApplication bm_sharedApplication].statusBarOrientation;
   if (UIInterfaceOrientationIsLandscape(orientation)) {
     _webView.frame = CGRectInset(_webView.frame,
       -(kPadding + kBorderWidth),
@@ -428,7 +429,7 @@ static CGFloat kBorderWidth = 10;
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
-  UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+  UIInterfaceOrientation orientation = [UIApplication bm_sharedApplication].statusBarOrientation;
   if (UIInterfaceOrientationIsLandscape(orientation)) {
     _webView.frame = CGRectInset(_webView.frame,
       kPadding + kBorderWidth,
@@ -486,9 +487,9 @@ static CGFloat kBorderWidth = 10;
   [_spinner startAnimating];
   _spinner.center = _webView.center;
 
-  UIWindow* window = [UIApplication sharedApplication].keyWindow;
+  UIWindow* window = [UIApplication bm_sharedApplication].keyWindow;
   if (!window) {
-    window = ([UIApplication sharedApplication].windows)[0];
+    window = ([UIApplication bm_sharedApplication].windows)[0];
   }
   [window addSubview:self];
 

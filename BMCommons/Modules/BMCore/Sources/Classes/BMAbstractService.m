@@ -9,6 +9,9 @@
 #import <BMCommons/BMAbstractService.h>
 #import <BMCommons/BMStringHelper.h>
 #import <BMCommons/BMCore.h>
+#if TARGET_OS_IPHONE
+#import "UIApplication+BMCommonsSharedApplication.h"
+#endif
 
 @interface BMAbstractService()
 
@@ -123,7 +126,7 @@
 #if TARGET_OS_IPHONE
     if (self.bgTaskIdentifier == UIBackgroundTaskInvalid && (self.isBackgroundService || self.isSendToBackgroundSupported)) {
         __typeof(self) __weak weakSelf = self;
-        self.bgTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void) {
+        self.bgTaskIdentifier = [[UIApplication bm_sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (weakSelf.isExecuting) {
                     [weakSelf cancel];
@@ -138,7 +141,7 @@
 #if TARGET_OS_IPHONE
     UIBackgroundTaskIdentifier bgTaskIdentifier = self.bgTaskIdentifier;
     if (bgTaskIdentifier != UIBackgroundTaskInvalid) {
-        [[UIApplication sharedApplication] endBackgroundTask:bgTaskIdentifier];
+        [[UIApplication bm_sharedApplication] endBackgroundTask:bgTaskIdentifier];
         self.bgTaskIdentifier = UIBackgroundTaskInvalid;
     }
 #endif

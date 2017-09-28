@@ -2,6 +2,7 @@
 
 #import <BMCommons/BMUICore.h>
 #import <BMCommons/UIScreen+BMCommons.h>
+#import <BMCommons/UIApplication+BMCommonsSharedApplication.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 static int gNetworkTaskCount = 0;
@@ -56,7 +57,7 @@ void BMRotateToOrientation(UIInterfaceOrientation orientation) {
 
 
 UIInterfaceOrientation BMInterfaceOrientation() {
-	UIInterfaceOrientation orient = [UIApplication sharedApplication].statusBarOrientation;
+	UIInterfaceOrientation orient = [UIApplication bm_sharedApplication].statusBarOrientation;
 	return orient;
 }
 
@@ -113,12 +114,12 @@ CGRect BMToolbarNavigationFrame() {
 }
 
 CGFloat BMStatusHeight() {
-    CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
+    CGRect statusBarFrame = [UIApplication bm_sharedApplication].statusBarFrame;
     return MIN(statusBarFrame.size.width, statusBarFrame.size.height);
 }
 
 CGFloat BMBarsHeight() {
-	CGRect frame = [UIApplication sharedApplication].statusBarFrame;
+	CGRect frame = [UIApplication bm_sharedApplication].statusBarFrame;
 	if (UIInterfaceOrientationIsPortrait(BMInterfaceOrientation())) {
 		return frame.size.height + BM_TOOLBAR_HEIGHT;
 	} else {
@@ -152,13 +153,13 @@ CGFloat BMKeyboardHeightForOrientation(UIInterfaceOrientation orientation) {
 
 void BMNetworkRequestStarted() {
 	if (gNetworkTaskCount++ == 0) {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		[UIApplication bm_sharedApplication].networkActivityIndicatorVisible = YES;
 	}
 }
 
 void BMNetworkRequestStopped() {
 	if (--gNetworkTaskCount == 0) {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		[UIApplication bm_sharedApplication].networkActivityIndicatorVisible = NO;
 	}
 }
 

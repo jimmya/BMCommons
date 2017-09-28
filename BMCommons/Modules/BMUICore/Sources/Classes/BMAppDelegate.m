@@ -9,6 +9,7 @@
 #import <BMCommons/BMAppDelegate.h>
 #import <BMCommons/BMUICore.h>
 #import <BMCommons/BMServiceManager.h>
+#import <BMCommons/UIApplication+BMCommonsSharedApplication.h>
 
 @interface BMAppDelegate(Private)
 
@@ -34,7 +35,7 @@
 #pragma mark Initialization and deallocation
 
 + (BMAppDelegate *)instance {
-	return (BMAppDelegate *)[UIApplication sharedApplication].delegate;
+	return (BMAppDelegate *)[UIApplication bm_sharedApplication].delegate;
 }
 
 - (id)init {
@@ -249,7 +250,7 @@
     [self showBusyViewWithCancelEnabled:cancelEnabled backgroundEnabled:service.isSendToBackgroundSupported];
     
     //Disable the idle timer of the app, thereby preventing it to go on standby
-    [UIApplication sharedApplication].idleTimerDisabled = YES;
+    [UIApplication bm_sharedApplication].idleTimerDisabled = YES;
 }
 
 - (void)popForegroundService:(id <BMService>)service {
@@ -258,7 +259,7 @@
     if (_activeForegroundServices.count == 0) {
         //If no active foreground services are present anymore: hide the busy view
         [self hideBusyView];
-        [UIApplication sharedApplication].idleTimerDisabled = NO;
+        [UIApplication bm_sharedApplication].idleTimerDisabled = NO;
     }
 }
 
